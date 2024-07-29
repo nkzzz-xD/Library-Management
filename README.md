@@ -5,3 +5,7 @@ if they are present in the library instead of looping through the whole library 
 (which would be the case had an array,arraylist,or similar been used). This is even more of a waste when the item is not found in the list
 as the whole list would already have been traversed. The time complexity for the checking if an element is present is O(n) but I reduced it to O(1)
 by using a dictionary.
+
+Run the program by compiling and executing the Source code and starting from Program.cs
+
+Also added persistence to the data saved, so when the user opens the program it reads the previously saved info. Book info will be separated by tabs.

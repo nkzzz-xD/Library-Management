@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,15 @@ namespace Library_Management
     class Library
     {
         private Dictionary<int,Book> books;
-        public void AddBook(Book book)
+        private string filePath;
+        public const string fileDelimiter = "\t";
+        public void AddBook(Book book,bool showFeedback)
         {
             books[book.ID] = book;
-            Console.WriteLine("Book added successfully!");
+            if (showFeedback)
+            {
+                Console.WriteLine("Book added successfully!");
+            }
         }
 
         public void ViewAllBooks()
@@ -76,9 +82,44 @@ namespace Library_Management
             return books.ContainsKey(id);
         }
 
-        public Library()
+        public Library(string filePath)
         {
             books = new Dictionary<int, Book>();
+            this.filePath = filePath;
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string? line;
+                    int lineCount = 0;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        lineCount++;
+                        string[] bookInfo = line.Split("\t");
+                        try
+                        {
+                            AddBook(new Book(Convert.ToInt32(bookInfo[0]), bookInfo[1], bookInfo[2], Convert.ToBoolean(bookInfo[3])),false);
+                        }
+                        catch (FormatException)
+                        {
+                            //ignore empty lines
+                            if (!line.Equals(""))
+                            {
+                                Console.WriteLine("Invalid format for book on line " + lineCount);
+                            }
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Console.WriteLine("Insufficient info for book on line " + lineCount);
+                        }
+
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                File.Create(filePath).Close();
+            }
         }
 
         public int GetBookCount()
@@ -120,6 +161,12 @@ namespace Library_Management
         public void ViewBorrowedBooks()
         {
             ViewSpecificBookType(true);
+        }
+
+        public void SaveToFile()
+        {
+            string[] tasksAsStrings = books.Select(b => b.Value.ToString()).ToArray();
+            File.WriteAllLines(filePath, tasksAsStrings);
         }
 
         //make multiple libraries possible and each library is defined by the file name.

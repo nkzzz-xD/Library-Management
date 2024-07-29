@@ -14,13 +14,17 @@ namespace Library_Management
         public string Author { get; set; }
         public bool IsBorrowed { get; set; }
 
-        public Book(int id, string title, string author)
+        public Book(int id, string title, string author) : this(id, title, author, false)
+        {
+
+        }
+
+        public Book(int id, string title, string author, bool isBorrowed)
         {
             ID = id;
             Title = title;
             Author = author;
-            IsBorrowed = false;
-
+            IsBorrowed = isBorrowed;
         }
         public void PrintBookInfo()
         {
@@ -30,5 +34,12 @@ namespace Library_Management
             string borrowedStatus = IsBorrowed ? "Borrowed" : "Available";
             Console.WriteLine("Status: " + borrowedStatus + "\n");
         }
+
+        public override string ToString()
+        {
+            //add datetime and the parsing of it later
+            return ID + Library.fileDelimiter + Title + Library.fileDelimiter + Author + Library.fileDelimiter + IsBorrowed;
+        }
+
     }
 }

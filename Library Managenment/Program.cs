@@ -2,6 +2,7 @@
 
 
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Library_Management;
 
@@ -9,6 +10,7 @@ class Program
 {
     private static bool running = true;
     private static Library currentLibrary;
+    
     static void Main(string[] args)
     {
         string? selectedOption;
@@ -55,7 +57,8 @@ class Program
 
     private static void InitialiseLibrary()
     {
-        currentLibrary = new Library();
+        currentLibrary = new Library("currentLibrary.lb");
+        //Console.WriteLine("Loading Library...");
     }
 
     private static void PrintMenu()
@@ -91,7 +94,8 @@ class Program
             Console.WriteLine("Enter book author");
             enteredAuthor = Console.ReadLine();
         }
-        currentLibrary.AddBook(new Book(id,enteredTitle,enteredAuthor));
+        currentLibrary.AddBook(new Book(id,enteredTitle,enteredAuthor),true);
+        currentLibrary.SaveToFile();
         PressToContinue();
     }
 
@@ -132,6 +136,7 @@ class Program
         }
         int id = getValidBookID("Enter book ID to " + transactionName);
         action(id);
+        currentLibrary.SaveToFile();
         PressToContinue();
     }
 
@@ -140,4 +145,5 @@ class Program
         Console.WriteLine("Press any key to continue");
         Console.ReadKey();
     }
+
 }
