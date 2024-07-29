@@ -1,7 +1,4 @@
-﻿
-
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Library_Management;
@@ -15,8 +12,7 @@ class Program
     {
         string? selectedOption;
         InitialiseLibrary();
-        //LoadTasks(); change to load the stored data from a file
-        //make the tasks persist (should appear when you open a new window) an dread it from file system
+        //make the tasks persist (should appear when you open a new window) and read it from file system
         while (running)
         {
             PrintMenu();
@@ -145,5 +141,4 @@ class Program
         Console.WriteLine("Press any key to continue");
         Console.ReadKey();
     }
-
 }
