@@ -16,7 +16,7 @@ namespace Library_Management
             Console.WriteLine("Book added successfully!");
         }
 
-        public void ViewBooks()
+        public void ViewAllBooks()
         {
             if(books.Count <= 0)
             {
@@ -84,6 +84,42 @@ namespace Library_Management
         public int GetBookCount()
         {
             return books.Count;
+        }
+        
+        //Allows the same method to be used to view the available books as well as the borrowed books
+        private void ViewSpecificBookType(bool isBorrowed)
+        {
+            string bookType = isBorrowed ? "Borrowed" : "Available";
+            //think of a way to do this without iterating over the list twice.
+            int bookCount = 0;
+            foreach (KeyValuePair<int, Book> bookPairing in books)
+            {
+                if (bookPairing.Value.IsBorrowed == isBorrowed) bookCount++;
+            }
+            if (bookCount <= 0)
+            {
+                Console.WriteLine("\nNo " + bookType.ToLower() + " books in library");
+                return;
+            }
+            Console.WriteLine("\n" + bookType + " Books in the library:");
+
+            foreach (KeyValuePair<int, Book> bookPairing in books)
+            {
+                if (bookPairing.Value.IsBorrowed == isBorrowed)
+                {
+                    bookPairing.Value.PrintBookInfo();
+                }
+            }
+        }
+
+        public void ViewAvailableBooks()
+        {
+            ViewSpecificBookType(false);
+        }
+
+        public void ViewBorrowedBooks()
+        {
+            ViewSpecificBookType(true);
         }
 
         //make multiple libraries possible and each library is defined by the file name.

@@ -25,16 +25,24 @@ class Program
                     AddBook();
                     break;
                 case "2":
-                    currentLibrary.ViewBooks();
+                    currentLibrary.ViewAllBooks();
                     PressToContinue();
                     break;
                 case "3":
-                    BorrowBook();
+                    currentLibrary.ViewAvailableBooks();
+                    PressToContinue();
                     break;
                 case "4":
-                    ReturnBook();
+                    currentLibrary.ViewBorrowedBooks();
+                    PressToContinue();
                     break;
                 case "5":
+                    BorrowBook();
+                    break;
+                case "6":
+                    ReturnBook();
+                    break;
+                case "7":
                     Console.WriteLine("Exiting the application");
                     running = false;
                     break;
@@ -55,9 +63,11 @@ class Program
         Console.WriteLine("\nWelcome to the Library Management System" +
             "\n1. Add a new book" +
             "\n2. View all books" +
-            "\n3. Borrow a book" +
-            "\n4. Return a book" +
-            "\n5. Exit\n");
+            "\n3. View available books" +
+            "\n4. View borrowed books" +
+            "\n5. Borrow a book" +
+            "\n6. Return a book" +
+            "\n7. Exit\n");
     }
     private static void AddBook()
     {
